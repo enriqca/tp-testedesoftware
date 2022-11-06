@@ -7,5 +7,6 @@ class Usuario(models.Model):
   nome = models.CharField(max_length=256)
   email = models.CharField(max_length=100)
   data_nascimento = models.DateField()
+
   def __str__(self) -> str:
-    return self.nome
+    return self.usuario

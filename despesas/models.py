@@ -7,7 +7,7 @@ class Despesas(models.Model):
   nome = models.CharField(max_length=256)
   descricao = models.CharField(max_length=256)
   data = models.CharField(max_length=256)
-  usuario_criador =  models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, default=None, related_name='criador')
+  #usuario_criador =  models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, default=None, related_name='criador')
   usuarios_relacionados = models.ManyToManyField(Usuario, related_name='relacionados') #o primeiro usuario será sempre o que pagou
   status = models.BooleanField(default=True)
 
@@ -32,19 +32,22 @@ class Despesas(models.Model):
   def __str__(self) -> str:
     return self.nome
 
+  def __del__(self):
+    return    
+
   def editar_despesa(self, NovaDespesa):
     self.nome = NovaDespesa.nome
     self.descricao = NovaDespesa.descricao
     self.data = NovaDespesa.data
-    self.usuario_criador = NovaDespesa.usuario_criador
-    self.usuarios_relacionados = NovaDespesa.usuarios_relacionados
+    #self.usuario_criador = NovaDespesa.usuario_criador
+    #self.usuarios_relacionados = NovaDespesa.usuarios_relacionados
     self.tipo_divisao = NovaDespesa.tipo_divisao
     self.valor_total = NovaDespesa.valor_total
     self.valor_atribuido = NovaDespesa.valor_atribuido
 
   def valida_valores_atribuidos(self, valor_total, valor_atribuido, tipo_divisao):
     total = sum(valor_atribuido)
-    if(tipo_divisao == 'DESIGUAL'):
+    if(tipo_divisao == 'DESIGUAL' or tipo_divisao == 'IGUAL'):
       return total == valor_total
     if(tipo_divisao == 'PERCENTUAL'):
       return total == 1
@@ -95,4 +98,3 @@ class SaldoDespesas(models.Model):
             saldo = saldo - valores[index-1]*despesa.valor_total
     return saldo
         
-

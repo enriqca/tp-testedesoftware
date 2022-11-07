@@ -39,16 +39,44 @@ class CriarUsuario(TestCase):
       usuario3.save()
 
 class AlterarUsuario(TestCase):
-  def test_alterar_nome_usuario(self):
+  def test_alterar_usuario(self):
     usuario1 = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
     usuario1.save()
     user = Usuario.objects.get(usuario='joaosouza')
-    self.assertEqual(user.nome,'Joao Souza')
-    user.alterar_usuario('Joao Sousa', 'joaosouza')
-    self.assertEqual(user.nome,'Joao Sousa')
+    self.assertEqual(user.usuario,'joaosouza')
+    user.alterar_usuario('joaosouza','joaosousa')
+    self.assertEqual(user.usuario,'joaosousa')
 
-  def test_alterar_nome_usuario_ja_existente(self):
-    pass
+  def test_alterar_nome_usuario(self):
+    usuario1 = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
+    usuario1.save()
+    usuario1.alterar_nome('Joao Sousa')
+    self.assertEqual(usuario1.nome,'Joao Sousa')
+    
 
   def test_alterar_senha(self):
-    pass
+    usuario1 = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
+    usuario1.save()
+    user = Usuario.objects.get(usuario='joaosouza')
+    resultado = user.alterar_senha(user.usuario,user.senha)
+    self.assertTrue(resultado)
+
+class FazerLogin(TestCase):
+
+    def test_fazer_login_usuario_existente(self):
+      usuario = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
+      usuario.save()
+      resultado = UsuarioView.logar_usuario('joao@souza','123')
+      self.assertTrue(resultado)
+
+    def test_fazer_login_usuario_nao_existente(self):
+      usuario = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
+      usuario.save()
+      with self.assertRaises(Exception) as exception:
+        UsuarioView.logar_usuario('joao@a','123')
+
+    def test_informar_senha_errada(self):
+      usuario = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
+      usuario.save()
+      with self.assertRaises(Exception) as exception:
+        UsuarioView.logar_usuario('joao@souza','12345')

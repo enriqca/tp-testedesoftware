@@ -12,11 +12,20 @@ class Usuario(models.Model):
   def __str__(self) -> str:
     return self.usuario
 
-  def alterar_usuario(self,nome,usuario):
-    self.usuario = usuario
+  def alterar_usuario(self,usuarioantigo,usuarionovo):
+    if(usuarioantigo==self.usuario):
+        self.usuario = usuarionovo
+    else:
+      raise Exception('Usuário não autorizado')
+
+  def alterar_nome(self,nome):
     self.nome = nome
 
-  # def alterar_senha(self,dados_usuario):
-  #   self.senha = dados_usuario.senha
+  def alterar_senha(self,usuario,senha):
+    if(usuario==self.usuario):
+      self.senha = senha
+      return True
+    else:
+      raise Exception('Usuário não permitido')
 
   

@@ -6,6 +6,7 @@ from usuario.models import Usuario
 class DespesasTest(TestCase):
   def test_ver_historico_despesas(self):
     pass
+  
   def test_ver_historico_com_determinado_usuario(self):
     pass
   def test_ver_saldo_geral_atual(self):

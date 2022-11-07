@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
-# from models import Usuario
+from .models import Usuario
 # Create your views here.
 
 def cadastrar_usuario(request):
@@ -31,3 +31,13 @@ def logar_usuario(request):
 class UsuarioView():
   def criar_usuario(usuario):
     return(usuario.nome)
+
+  def logar_usuario(email_usuario,senha_usuario):
+    usuario_login = Usuario.objects.get(email=email_usuario)
+    if(usuario_login):
+        if(usuario_login.senha == senha_usuario):
+            return True
+        else:
+            raise Exception('Senha incorreta')
+    else:
+        raise Exception('Email não cadastrado')

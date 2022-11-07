@@ -18,4 +18,4 @@ jobs:
           echo "Rodando testes..."
           echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
           echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-          python3 -m unittest test_termo.py
+          python manage.py test

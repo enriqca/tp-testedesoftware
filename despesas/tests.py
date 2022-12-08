@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .models import Despesas, SaldoDespesas
-from usuario.models import Usuario
+from django.contrib.auth.models import User
 
 # Create your tests here.
 class DespesasTest(TestCase):
@@ -89,8 +89,8 @@ class CalculoDespesasTest(TestCase):
     self.assertTrue(despesas.valida_valores_atribuidos(total, valores2, 'PERCENTUAL'))
 
   def test_calculo_saldo_determinada_despesa_desigual(self):
-    user1 = Usuario(nome='user1')
-    user2 = Usuario(nome='user2')
+    user1 = User(username='enriqca',email='rick@a',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Henrique', last_name='Souza')
+    user2 = User(username='marciamo',email='marcia@moreira',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Marcia', last_name='Moreira')
 
     despesa = Despesas(valor_total = 15.00, valor_atribuido = [10.00, 5.00], tipo_divisao='DESIGUAL')
     saldos = SaldoDespesas()
@@ -100,8 +100,8 @@ class CalculoDespesasTest(TestCase):
     self.assertEqual(saldo_user2, -5.00)
 
   def test_calculo_saldo_determinada_despesa_igual(self):
-    user1 = Usuario(nome='user1')
-    user2 = Usuario(nome='user2')
+    user1 = User(username='enriqca',email='rick@a',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Henrique', last_name='Souza')
+    user2 = User(username='marciamo',email='marcia@moreira',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Marcia', last_name='Moreira')
 
     despesa = Despesas(valor_total = 10.00, valor_atribuido = [5.00, 5.00], tipo_divisao='IGUAL')
     saldos = SaldoDespesas()

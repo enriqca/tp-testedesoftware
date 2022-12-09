@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as django_logout
 from django.contrib.auth.models import User
 from .models import Usuario
 from django.views.decorators.http import require_POST
@@ -35,14 +36,21 @@ def cadastrar_usuario(request):
 
 @require_POST
 def logar_usuario(request):
-    usuario_aux = User.objects.get(email=request.POST['email'])
-    usuario = authenticate(username=usuario_aux.username,
+    try:
+        usuario_aux = User.objects.get(email=request.POST['email'])
+        usuario = authenticate(username=usuario_aux.username,
                            password=request.POST["password"])
-    if usuario is not None:
-        login(request, usuario)
-        return HttpResponseRedirect('/dashboard')
+        if usuario is not None:
+            login(request, usuario)
+            return HttpResponseRedirect('/dashboard')
+    except User.DoesNotExist:
+        return redirect('/login')
 
-    return HttpResponseRedirect('/dashboard')
+    return HttpResponseRedirect('/login')
+
+def logout(request):
+    django_logout(request)
+    return redirect('/')
 
 # def cadastrar_usuario(request):
 #     if request.method == "POST":

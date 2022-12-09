@@ -1,5 +1,4 @@
 from django.test import TestCase, Client
-from .models import Usuario
 from .views import *
 from django.contrib.auth.models import User
 
@@ -39,12 +38,12 @@ class TestExcecaoCriarUsuario(TestCase):
   #   with self.assertRaises(Exception) as exception:
       # usuario3.save()
 
-class AlterarUsuario(TestCase):
-  def test_alterar_usuario(self):
-    usuario1 = User(username='enriqca',email='rick@a',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Henrique', last_name='Souza')
-    usuario1.save()
-    user = User.objects.get(email='rick@a')
-    self.assertEqual(user.username,'enriqca')
+# class AlterarUsuario(TestCase):
+#   def test_alterar_usuario(self):
+#     usuario1 = User(username='enriqca',email='rick@a',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Henrique', last_name='Souza')
+#     usuario1.save()
+#     user = User.objects.get(email='rick@a')
+#     self.assertEqual(user.username,'enriqca')
     # user.alterar_usuario('joaosouza','joaosousa')
     # self.assertEqual(user.usuario,'joaosousa')
 
@@ -62,19 +61,19 @@ class AlterarUsuario(TestCase):
 #     resultado = user.alterar_senha(user.usuario,user.senha)
 #     self.assertTrue(resultado)
 
-# class FazerLogin(TestCase):
+class TestLogin(TestCase):
 
-#     def test_fazer_login_usuario_existente(self):
-#       usuario = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
-#       usuario.save()
-#       resultado = UsuarioView.logar_usuario('joao@souza','123')
-#       self.assertTrue(resultado)
+    def test_fazer_login_usuario_existente(self):
+      usuario = User(username='enriqca',email='rick@a',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Henrique', last_name='Souza')
+      usuario.save()
+      response = self.client.post('/login',{'username': usuario.username, 'password': usuario.password})
+      self.assertEqual(response.status_code,200)
 
-#     def test_fazer_login_usuario_nao_existente(self):
-#       usuario = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')
-#       usuario.save()
-#       with self.assertRaises(Exception) as exception:
-#         UsuarioView.logar_usuario('joao@a','123')
+    def test_fazer_login_usuario_nao_existente(self):
+      usuario = User(username='enriqca',email='rick@a',password='pbkdf2_sha256$390000$t0uqkHvtM0GFojVbIQBEnW$cqcpLwGVogOmz4GKF6+xf8BDaTsnq93/b37RooUuhjE=',first_name='Henrique', last_name='Souza')
+      usuario.save()
+      response = self.client.post('/login',{'username': 'henrique@a', 'password': '123'})
+      self.assertTemplateUsed(response,'login.html')
 
 #     def test_informar_senha_errada(self):
 #       usuario = Usuario(usuario='joaosouza',nome='Joao Souza',email='joao@souza',data_nascimento='2002-04-07',senha='123')

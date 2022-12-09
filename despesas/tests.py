@@ -37,6 +37,12 @@ class DespesasTest(TestCase):
     despesa.editar_despesa(nova_despesa)
     self.assertEqual(despesa.valor_total, 25.00)
 
+  def test_quitar_despesa(self):
+    despesa = Despesas(valor_total = 10, valor_atribuido = [5,5])
+    despesa.quitarDespesa()
+    self.assertFalse(despesa.status)
+
+
 class CalculoDespesasTest(TestCase):
   def test_calculo_despesa_dividida_igualmente(self):
     despesas = Despesas()
@@ -145,6 +151,25 @@ class CalculoDespesasTest(TestCase):
     saldo_user2 = saldos.calcula_saldo_usuario('user2', ['user1','user2'], [despesa1, despesa2])
     self.assertEqual(saldo_user1, 15.00)
     self.assertEqual(saldo_user2, -15.00)
+
+  def test_calculo_saldo_apos_quitar_despesa(self):
+    despesa1 = Despesas(valor_total = 10.00, valor_atribuido = [5.0, 5.0], tipo_divisao='IGUAL')
+    despesa2 = Despesas(valor_total = 15.00, valor_atribuido = [5.0, 10.0], tipo_divisao='IGUAL')
+    saldos = SaldoDespesas()
+    saldos.quitarDespesaEspecifica(despesa1, [despesa1, despesa2])
+    saldo_user1 = saldos.calcula_saldo_usuario('user1', ['user1','user2'], [despesa1, despesa2])
+    self.assertEqual(saldo_user1, 10.00)
+    
+  def test_calculo_saldo_apos_quitar_todas_despesas(self):
+    despesa1 = Despesas(valor_total = 10.00, valor_atribuido = [5.0, 5.0])
+    despesa2 = Despesas(valor_total = 15.00, valor_atribuido = [5.0, 10.0])
+    saldos = SaldoDespesas()
+    saldos.quitarTodasDespesas([despesa1, despesa2])
+    saldo_user1 = saldos.calcula_saldo_usuario('user1', ['user1','user2'], [despesa1, despesa2])
+    saldo_user2 = saldos.calcula_saldo_usuario('user2', ['user1','user2'], [despesa1, despesa2])
+    self.assertEqual(saldo_user1, 0.00)
+    self.assertEqual(saldo_user2, 0.00)
+    
 
 '''
   def test_calculo_total_todas_despesas(self):

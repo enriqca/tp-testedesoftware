@@ -75,6 +75,9 @@ class Despesas(models.Model):
       valor_dividido.append(valor_percentual)
     return valor_dividido
 
+  def quitarDespesa(self):
+    self.status = False
+
 class SaldoDespesas(models.Model):
   #despesas = ArrayField(models.ForeignKey(Despesas, on_delete=models.DO_NOTHING, default=None))
   despesas = models.ManyToManyField(Despesas)
@@ -97,4 +100,11 @@ class SaldoDespesas(models.Model):
           else:
             saldo = saldo - valores[index-1]*despesa.valor_total
     return saldo
-        
+
+  def quitarDespesaEspecifica(self, despesa, lista_despesas):
+    index = lista_despesas.index(despesa)
+    lista_despesas[index].quitarDespesa()
+
+  def quitarTodasDespesas(self, lista_despesas):
+    for despesa in lista_despesas:
+      self.quitarDespesaEspecifica(despesa, lista_despesas)

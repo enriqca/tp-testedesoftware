@@ -7,6 +7,8 @@ urlpatterns=[
   path('login', login_page, name='login'),
   path('dashboard', dashboard_page, name='dashboard'),
   path('cadastro', cadastro_page, name='cadastro'),
-  path('dashboard/historico', historico_page, name='historico'),
-  path('dashboard/graficos', graficos_page, name='graficos'),
+  path('historico', historico_page, name='historico'),
+  path('graficos', graficos_page, name='graficos'),
+  path('adicionardespesa', adicionar_despesa_page, name='adicionardespesa'),
+  path('quitardividas', quitar_dividas_page, name='quitardividas'),
 ]

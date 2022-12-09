@@ -31,3 +31,9 @@ def historico_page(request):
 
 def graficos_page(request):
     return render(request, 'graficos.html')
+
+def adicionar_despesa_page(request):
+    return render(request, 'adicionardespesa.html')
+
+def quitar_dividas_page(request):
+    return render(request, 'quitardividas.html')

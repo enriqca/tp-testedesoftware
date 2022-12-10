@@ -1,14 +1,14 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from usuario.models import Usuario
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Despesas(models.Model):
   nome = models.CharField(max_length=256)
   descricao = models.CharField(max_length=256)
   data = models.CharField(max_length=256)
-  #usuario_criador =  models.ForeignKey(Usuario, on_delete=models.DO_NOTHING, default=None, related_name='criador')
-  usuarios_relacionados = models.ManyToManyField(Usuario, related_name='relacionados') #o primeiro usuario será sempre o que pagou
+  #usuario_criador =  models.ForeignKey(User, on_delete=models.DO_NOTHING, default=None, related_name='criador')
+  usuarios_relacionados = models.ManyToManyField(User, related_name='relacionados') #o primeiro usuario será sempre o que pagou
   status = models.BooleanField(default=True)
 
   DIV_IGUAL = 'IGUAL'

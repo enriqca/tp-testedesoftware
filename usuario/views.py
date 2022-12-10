@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from .models import Usuario
 from django.views.decorators.http import require_POST
 from main.templates import *
-# Create your views here.
 
 @require_POST
 def cadastrar_usuario(request):
@@ -44,48 +43,10 @@ def logar_usuario(request):
             login(request, usuario)
             return HttpResponseRedirect('/dashboard')
     except User.DoesNotExist:
-        return redirect('/login')
+        error = "Usuário não cadastrado"
 
-    return HttpResponseRedirect('/login')
+    return render(request, 'login.html', {'error': error})
 
 def logout(request):
     django_logout(request)
     return redirect('/')
-
-# def cadastrar_usuario(request):
-#     if request.method == "POST":
-#         form_usuario = UserCreationForm(request.POST)
-#         if form_usuario.is_valid():
-#             form_usuario.save()
-#             return redirect('/dashboard')
-#     else:
-#         form_usuario = UserCreationForm()
-#     return render(request, 'cadastro.html', {'form_usuario': form_usuario})
-
-# def logar_usuario(request):
-#     if request.method == "POST":
-#         username = request.POST["username"]
-#         password = request.POST["password"]
-#         usuario = authenticate(request, username=username, password=password)
-#         if usuario is not None:
-#             login(request, usuario)
-#             return redirect('index')
-#         else:
-#             form_login = AuthenticationForm()
-#     else:
-#         form_login = AuthenticationForm()
-#     return render(request, 'login.html', {'form_login': form_login})
-
-# class UsuarioView():
-#   def criar_usuario(usuario):
-#     return(usuario.nome)
-
-#   def logar_usuario(email_usuario,senha_usuario):
-#     usuario_login = Usuario.objects.get(email=email_usuario)
-#     if(usuario_login):
-#         if(usuario_login.senha == senha_usuario):
-#             return True
-#         else:
-#             raise Exception('Senha incorreta')
-#     else:
-#         raise Exception('Email não cadastrado')

@@ -23,3 +23,9 @@ jobs:
       - name: Run tests
         run: |
             python manage.py test
+      - name: Generate Report
+        run: |
+            pip install coverage
+            coverage run manage.py test && coverage report
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3

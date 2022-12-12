@@ -15,7 +15,7 @@ class Despesas(models.Model):
   DIV_DESIG = 'DESIGUAL'
   DIV_PERCE = 'PERCENTUAL'
   DIVISAO_CHOICES = [
-      (DIV_IGUAL, 'Dividido igualmente'),
+      (DIV_IGUAL, 'Dividido igualmente'), 
       (DIV_DESIG, 'Dividido desigualmente'),
       (DIV_PERCE, 'Dividido percentualmente'),
   ]
@@ -27,8 +27,8 @@ class Despesas(models.Model):
   )
 
   valor_total = models.FloatField()
-  valor_atribuido = ArrayField(models.FloatField()) #valor atribuido a cada usuario de acordo com a divisão
-
+  #valor_atribuido = ArrayField(models.FloatField()) #valor atribuido a cada usuario de acordo com a divisão
+  valor_atribuido = models.CharField(max_length=256)
   def __str__(self) -> str:
     return self.nome
 

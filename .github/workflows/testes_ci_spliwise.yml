@@ -23,6 +23,9 @@ jobs:
       - name: Run tests
         run: |
             python manage.py test
+      - name: Run functional tests
+        run: |
+            python manage.py test functional_tests
       - name: Generate Report
         run: |
             pip install coverage

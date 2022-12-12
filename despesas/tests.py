@@ -1,8 +1,22 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from .models import Despesas, SaldoDespesas
 from django.contrib.auth.models import User
+from .views import *
 
 # Create your tests here.
+class TesteCriarDespesa(TestCase):
+  def test_criar_nova_despesa(self):
+    self.assertEqual(Despesas.objects.count(),0)
+    nova_despesa = Despesas(nome='Compras supermercado',descricao='Compras no EPA',data='2020-02-20',tipo_divisao='IGUAL',valor_total=15, valor_atribuido='10; 5')
+    nova_despesa.save()
+    self.assertEqual(Despesas.objects.count(),1)
+
+  def test_post_criar_nova_despesa(self):
+    d = Despesas(nome='Compras supermercado',descricao='Compras no EPA',data='2020-02-20',tipo_divisao='IGUAL',valor_total=15, valor_atribuido='10; 5')
+    response = self.client.post('/adicionardespesa',{'nome_despesa': d.nome, 'descricao_despesa': d.descricao, 'valor_total_despesa': d.valor_total, 'data_despesa': d.data, 'tipo_divisao_desp': d.tipo_divisao, 'valor_atribuido': d.valor_atribuido})
+    resposta = response.context['resposta']
+    self.assertEqual(resposta,'Despesa criada com sucesso!')
+  
 class DespesasTest(TestCase):
   '''
   def test_ver_historico_despesas(self):

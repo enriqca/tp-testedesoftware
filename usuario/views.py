@@ -3,7 +3,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.models import User
-from .models import Usuario
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.views.decorators.http import require_POST
 from main.templates import *
 
@@ -45,8 +46,19 @@ def logar_usuario(request):
     except User.DoesNotExist:
         error = "Usuário não cadastrado"
 
-    return render(request, 'login.html', {'error': error})
+    return render(request, 'login.html')
 
 def logout(request):
     django_logout(request)
     return redirect('/')
+
+def alterar_senha(request):
+    if request.method == "POST":
+        form_senha = PasswordChangeForm(request.user, request.POST)
+        if form_senha.is_valid():
+            user = form_senha.save()
+            update_session_auth_hash(request, user)
+            return redirect('dashboard')
+    else:
+        form_senha = PasswordChangeForm(request.user)
+    return render(request, 'alterar_senha.html', {'form_senha': form_senha})
